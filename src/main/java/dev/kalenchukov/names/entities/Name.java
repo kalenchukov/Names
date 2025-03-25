@@ -65,7 +65,7 @@ public final class Name
 	private final int usageCountry;
 
 	/**
-	 * Страна происхождения.
+	 * Происхождение.
 	 */
 	@NotNull
 	private final String origin;
@@ -96,7 +96,7 @@ public final class Name
 	 * @param rankCountry место среди самых популярных имён в стране.
 	 * @param usageWorld количество людей с этим именем в мире.
 	 * @param usageCountry количество людей с этим именем в стране.
-	 * @param origin страна происхождения.
+	 * @param origin происхождение.
 	 * @param continent континент использования.
 	 * @param country страна в которой больше всего людей с этим именем.
 	 * @param countryDensity страна в которой больше всего плотность людей с этим именем.
@@ -165,9 +165,9 @@ public final class Name
 	}
 
 	/**
-	 * Возвращает страну происхождения.
+	 * Возвращает происхождение.
 	 *
-	 * @return страна происхождения.
+	 * @return происхождение.
 	 */
 	@NotNull
 	public String getOrigin()
@@ -236,7 +236,7 @@ public final class Name
 	 * @param rankCountry место среди самых популярных имён в стране.
 	 * @param usageWorld количество людей с этим именем в мире.
 	 * @param usageCountry количество людей с этим именем в стране.
-	 * @param origin страна происхождения.
+	 * @param origin происхождение.
 	 * @param continent континент использования.
 	 * @param country страна в которой больше всего людей с этим именем.
 	 * @param countryDensity страна в которой больше всего плотность людей с этим именем.
