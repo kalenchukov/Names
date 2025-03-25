@@ -31,48 +31,141 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public class Names
+/**
+ * Класс имён.
+ *
+ * @author Алексей Каленчуков.
+ */
+public final class Names
 {
+	/**
+	 * Репозиторий имён.
+	 */
 	@NotNull
 	private static final NameRepositories repository = new NameRepository();
 
+	/**
+	 * Конструктор для {@code Names}.
+	 */
+	private Names() {}
+
+	/**
+	 * Возвращает количество имён.
+	 *
+	 * @return количество имён.
+	 */
 	public static int count()
 	{
 		return repository.count();
 	}
 
+	/**
+	 * Выполняет проверку существования имени.
+	 *
+	 * @param name имя.
+	 * @return {@code true}, если имя существует, иначе {@code false}.
+	 */
 	public static boolean exists(@NotNull final String name)
 	{
 		return repository.existsByName(name);
 	}
 
+	/**
+	 * Возвращает имя по названию.
+	 *
+	 * @param name имя.
+	 * @return имя.
+	 */
 	@NotNull
 	public static Name getByName(@NotNull final String name)
 	{
 		return repository.getByName(name);
 	}
 
+	/**
+	 * Возвращает список имён в указанной стране.
+	 *
+	 * @param country страна.
+	 * @return список имён в указанной стране.
+	 */
 	@NotNull
 	public static Collection<@NotNull Name> getByCountry(@NotNull final String country)
 	{
 		return repository.getByCountry(country);
 	}
 
+	/**
+	 * Возвращает список имён в указанной стране по плотности населения.
+	 *
+	 * @param country страна.
+	 * @return список имён в указанной стране по плотности населения.
+	 */
+	@NotNull
+	public static Collection<@NotNull Name> getByCountryDensity(@NotNull final String country)
+	{
+		return repository.getByCountryDensity(country);
+	}
+
+	/**
+	 * Возвращает список всех имён.
+	 *
+	 * @return список всех имён.
+	 */
 	@NotNull
 	public static Collection<@NotNull Name> getAll()
 	{
 		return repository.getAll();
 	}
 
+	/**
+	 * Возвращает список имён по интервалу использования в мире.
+	 *
+	 * @param min минимальное количество использований.
+	 * @param max максимальное количество использований.
+	 * @return список имён.
+	 */
 	@NotNull
-	public static Collection<@NotNull Name> getBetweenUsage(final int min, final int max)
+	public static Collection<@NotNull Name> getBetweenUsageWorld(final int min, final int max)
 	{
-		return repository.getBetweenUsage(min, max);
+		return repository.getBetweenUsageWorld(min, max);
 	}
 
+	/**
+	 * Возвращает список имён по интервалу использования в стране.
+	 *
+	 * @param min минимальное количество использований.
+	 * @param max максимальное количество использований.
+	 * @return список имён.
+	 */
 	@NotNull
-	public static Collection<@NotNull Name> getBetweenRank(final int min, final int max)
+	public static Collection<@NotNull Name> getBetweenUsageCountry(final int min, final int max)
 	{
-		return repository.getBetweenRank(min, max);
+		return repository.getBetweenUsageCountry(min, max);
+	}
+
+	/**
+	 * Возвращает список имён по интервалу рейтинга в мире.
+	 *
+	 * @param min минимальное количество рейтинга.
+	 * @param max максимальное количество рейтинга.
+	 * @return список имён.
+	 */
+	@NotNull
+	public static Collection<@NotNull Name> getBetweenRankWorld(final int min, final int max)
+	{
+		return repository.getBetweenRankWorld(min, max);
+	}
+
+	/**
+	 * Возвращает список имён по интервалу рейтинга в стране.
+	 *
+	 * @param min минимальное количество рейтинга.
+	 * @param max максимальное количество рейтинга.
+	 * @return список имён.
+	 */
+	@NotNull
+	public static Collection<@NotNull Name> getBetweenRankCountry(final int min, final int max)
+	{
+		return repository.getBetweenRankCountry(min, max);
 	}
 }

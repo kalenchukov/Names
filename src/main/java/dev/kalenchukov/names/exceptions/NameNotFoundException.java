@@ -26,8 +26,18 @@ package dev.kalenchukov.names.exceptions;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Исключение для отсутствия имени.
+ *
+ * @author Алексей Каленчуков
+ */
 public class NameNotFoundException extends RuntimeException
 {
+	/**
+	 * Конструктор для {@code NameNotFoundException}.
+	 *
+	 * @param message сообщение.
+	 */
 	public NameNotFoundException(@NotNull final String message)
 	{
 		super(message);

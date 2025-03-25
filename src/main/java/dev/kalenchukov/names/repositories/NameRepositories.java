@@ -26,32 +26,122 @@ package dev.kalenchukov.names.repositories;
 
 import dev.kalenchukov.names.entities.Name;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
+/**
+ * Интерфейс для реализации репозитория имён.
+ *
+ * @author Алексей Каленчуков
+ */
 public interface NameRepositories
 {
+	/**
+	 * Возвращает количество имён.
+	 *
+	 * @return количество имён.
+	 */
 	int count();
 
+	/**
+	 * Выполняет проверку существования имени.
+	 *
+	 * @param name имя.
+	 * @return {@code true}, если имя существует, иначе {@code false}.
+	 */
 	boolean existsByName(@NotNull String name);
 
+	/**
+	 * Возвращает имя по названию.
+	 *
+	 * @param name имя.
+	 * @return имя.
+	 */
 	@NotNull
 	Name getByName(@NotNull String name);
 
+	/**
+	 * Возвращает список имён в указанной стране.
+	 *
+	 * @param country страна.
+	 * @return список имён в указанной стране.
+	 */
 	@NotNull
-	Collection<@NotNull Name> getByCountry(@NotNull String name);
+	Collection<@NotNull Name> getByCountry(@NotNull String country);
 
+	/**
+	 * Возвращает список имён в указанной стране по плотности населения.
+	 *
+	 * @param country страна.
+	 * @return список имён в указанной стране по плотности населения.
+	 */
+	@NotNull
+	Collection<@NotNull Name> getByCountryDensity(@NotNull String country);
+
+	/**
+	 * Возвращает список всех имён.
+	 *
+	 * @return список всех имён.
+	 */
 	@NotNull
 	Collection<@NotNull Name> getAll();
 
+	/**
+	 * Возвращает список имён по интервалу использования в мире.
+	 *
+	 * @param min минимальное количество использований.
+	 * @param max максимальное количество использований.
+	 * @return список имён.
+	 */
 	@NotNull
-	Collection<@NotNull Name> getBetweenUsage(int min, int max);
+	Collection<@NotNull Name> getBetweenUsageWorld(int min, int max);
 
+	/**
+	 * Возвращает список имён по интервалу использования в стране.
+	 *
+	 * @param min минимальное количество использований.
+	 * @param max максимальное количество использований.
+	 * @return список имён.
+	 */
 	@NotNull
-	Collection<@NotNull Name> getBetweenRank(int min, int max);
+	Collection<@NotNull Name> getBetweenUsageCountry(int min, int max);
 
+	/**
+	 * Возвращает список имён по интервалу рейтинга в мире.
+	 *
+	 * @param min минимальное количество рейтинга.
+	 * @param max максимальное количество рейтинга.
+	 * @return список имён.
+	 */
+	@NotNull
+	Collection<@NotNull Name> getBetweenRankWorld(int min, int max);
+
+	/**
+	 * Возвращает список имён по интервалу рейтинга в стране.
+	 *
+	 * @param min минимальное количество рейтинга.
+	 * @param max максимальное количество рейтинга.
+	 * @return список имён.
+	 */
+	@NotNull
+	Collection<@NotNull Name> getBetweenRankCountry(int min, int max);
+
+	/**
+	 * Добавляет имя.
+	 *
+	 * @param name имя.
+	 */
 	void add(@NotNull Name name);
 
+	/**
+	 * Удаляет имя.
+	 *
+	 * @param name имя.
+	 */
+	void deleteByName(@NotNull String name);
+
+	/**
+	 * Создаёт таблицу для имён.
+	 */
 	void create();
 }

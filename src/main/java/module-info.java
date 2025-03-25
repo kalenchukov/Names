@@ -1,4 +1,7 @@
-open module dev.kalenchukov.names
+/**
+ * Определяет API для получения информации об именах мира.
+ */
+module dev.kalenchukov.names
 {
 	requires java.sql;
 	requires org.jetbrains.annotations;

@@ -33,25 +33,35 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Класс базы данных.
+ */
 public class Database
 {
+	/**
+	 * Название файла.
+	 */
 	@NotNull
 	private static final String FILE = "names.db";
 
-	@NotNull
-	private static final String PATH = System.getProperty("user.dir") +
-		"/src/main/resources/";
-
+	/**
+	 * Соединение.
+	 */
 	@Nullable
 	private static Connection connection;
 
+	/**
+	 * Возвращает соединение.
+	 *
+	 * @return соединение.
+	 */
 	@NotNull
 	public static Connection getConnection()
 	{
 		if (Database.connection == null) {
 			try {
 				DriverManager.registerDriver(new JDBC());
-				Database.connection = DriverManager.getConnection("jdbc:sqlite:" + PATH + FILE);
+				Database.connection = DriverManager.getConnection("jdbc:sqlite::resource:" + FILE);
 			} catch (SQLException exception) {
 				throw new DatabaseException("Не удалось подключиться к базе данных.", exception);
 			}

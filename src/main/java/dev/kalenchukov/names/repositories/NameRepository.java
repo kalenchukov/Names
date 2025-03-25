@@ -34,16 +34,33 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Класс репозитория имён.
+ *
+ * @author Алексей Каленчуков
+ */
 public class NameRepository implements NameRepositories
 {
+	/**
+	 * Соединение с базой данных.
+	 */
 	@NotNull
 	private final Connection connection;
 
+	/**
+	 * Конструктор для {@code NameRepository}.
+	 */
 	public NameRepository()
 	{
 		this.connection = Database.getConnection();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param name {@inheritDoc}
+	 * @return {@inheritDoc}
+	 */
 	@NotNull
 	@Override
 	public Name getByName(@NotNull final String name)
@@ -63,8 +80,13 @@ public class NameRepository implements NameRepositories
 			{
 				return Name.of(
 					resultSet.getString("name"),
-					resultSet.getInt("rank"),
-					resultSet.getInt("usage"),
+					resultSet.getInt("rank_world"),
+					resultSet.getInt("rank_country"),
+					resultSet.getInt("usage_world"),
+					resultSet.getInt("usage_country"),
+					resultSet.getString("origin"),
+					resultSet.getString("continent"),
+					resultSet.getString("country"),
 					resultSet.getString("country_density")
 				);
 			}
@@ -77,6 +99,11 @@ public class NameRepository implements NameRepositories
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return {@inheritDoc}
+	 */
 	@NotNull
 	@Override
 	public Collection<@NotNull Name> getAll()
@@ -96,8 +123,13 @@ public class NameRepository implements NameRepositories
 				names.add(
 					Name.of(
 						resultSet.getString("name"),
-						resultSet.getInt("rank"),
-						resultSet.getInt("usage"),
+						resultSet.getInt("rank_world"),
+						resultSet.getInt("rank_country"),
+						resultSet.getInt("usage_world"),
+						resultSet.getInt("usage_country"),
+						resultSet.getString("origin"),
+						resultSet.getString("continent"),
+						resultSet.getString("country"),
 						resultSet.getString("country_density")
 					)
 				);
@@ -111,9 +143,61 @@ public class NameRepository implements NameRepositories
 		return names;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param country {@inheritDoc}
+	 * @return {@inheritDoc}
+	 */
 	@NotNull
 	@Override
 	public Collection<@NotNull Name> getByCountry(@NotNull final String country)
+	{
+		Collection<Name> names = new ArrayList<>();
+
+		String sql = "SELECT * FROM `names` WHERE `country` = ? COLLATE NOCASE";
+
+		try (PreparedStatement statement = connection.prepareStatement(sql))
+		{
+			statement.setString(1, country);
+			statement.execute();
+
+			ResultSet resultSet = statement.getResultSet();
+
+			while (resultSet.next())
+			{
+				names.add(
+					Name.of(
+						resultSet.getString("name"),
+						resultSet.getInt("rank_world"),
+						resultSet.getInt("rank_country"),
+						resultSet.getInt("usage_world"),
+						resultSet.getInt("usage_country"),
+						resultSet.getString("origin"),
+						resultSet.getString("continent"),
+						resultSet.getString("country"),
+						resultSet.getString("country_density")
+					)
+				);
+			}
+		}
+		catch (SQLException exception)
+		{
+			throw new DatabaseException("Не удалось выполнить запрос в базу данных.", exception);
+		}
+
+		return names;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param country {@inheritDoc}
+	 * @return {@inheritDoc}
+	 */
+	@NotNull
+	@Override
+	public Collection<@NotNull Name> getByCountryDensity(@NotNull final String country)
 	{
 		Collection<Name> names = new ArrayList<>();
 
@@ -131,8 +215,13 @@ public class NameRepository implements NameRepositories
 				names.add(
 					Name.of(
 						resultSet.getString("name"),
-						resultSet.getInt("rank"),
-						resultSet.getInt("usage"),
+						resultSet.getInt("rank_world"),
+						resultSet.getInt("rank_country"),
+						resultSet.getInt("usage_world"),
+						resultSet.getInt("usage_country"),
+						resultSet.getString("origin"),
+						resultSet.getString("continent"),
+						resultSet.getString("country"),
 						resultSet.getString("country_density")
 					)
 				);
@@ -146,13 +235,20 @@ public class NameRepository implements NameRepositories
 		return names;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param min {@inheritDoc}
+	 * @param max {@inheritDoc}
+	 * @return {@inheritDoc}
+	 */
 	@NotNull
 	@Override
-	public Collection<@NotNull Name> getBetweenUsage(final int min, final int max)
+	public Collection<@NotNull Name> getBetweenUsageWorld(final int min, final int max)
 	{
 		Collection<Name> names = new ArrayList<>();
 
-		String sql = "SELECT * FROM `names` WHERE `usage` NOT BETWEEN ? AND ?";
+		String sql = "SELECT * FROM `names` WHERE `usage_world` NOT BETWEEN ? AND ?";
 
 		try (PreparedStatement statement = connection.prepareStatement(sql))
 		{
@@ -167,8 +263,13 @@ public class NameRepository implements NameRepositories
 				names.add(
 					Name.of(
 						resultSet.getString("name"),
-						resultSet.getInt("rank"),
-						resultSet.getInt("usage"),
+						resultSet.getInt("rank_world"),
+						resultSet.getInt("rank_country"),
+						resultSet.getInt("usage_world"),
+						resultSet.getInt("usage_country"),
+						resultSet.getString("origin"),
+						resultSet.getString("continent"),
+						resultSet.getString("country"),
 						resultSet.getString("country_density")
 					)
 				);
@@ -182,13 +283,20 @@ public class NameRepository implements NameRepositories
 		return names;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param min {@inheritDoc}
+	 * @param max {@inheritDoc}
+	 * @return {@inheritDoc}
+	 */
 	@NotNull
 	@Override
-	public Collection<@NotNull Name> getBetweenRank(final int min, final int max)
+	public Collection<@NotNull Name> getBetweenUsageCountry(final int min, final int max)
 	{
 		Collection<Name> names = new ArrayList<>();
 
-		String sql = "SELECT * FROM `names` WHERE `rank` NOT BETWEEN ? AND ?";
+		String sql = "SELECT * FROM `names` WHERE `usage_country` NOT BETWEEN ? AND ?";
 
 		try (PreparedStatement statement = connection.prepareStatement(sql))
 		{
@@ -203,8 +311,13 @@ public class NameRepository implements NameRepositories
 				names.add(
 					Name.of(
 						resultSet.getString("name"),
-						resultSet.getInt("rank"),
-						resultSet.getInt("usage"),
+						resultSet.getInt("rank_world"),
+						resultSet.getInt("rank_country"),
+						resultSet.getInt("usage_world"),
+						resultSet.getInt("usage_country"),
+						resultSet.getString("origin"),
+						resultSet.getString("continent"),
+						resultSet.getString("country"),
 						resultSet.getString("country_density")
 					)
 				);
@@ -218,6 +331,107 @@ public class NameRepository implements NameRepositories
 		return names;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param min {@inheritDoc}
+	 * @param max {@inheritDoc}
+	 * @return {@inheritDoc}
+	 */
+	@NotNull
+	@Override
+	public Collection<@NotNull Name> getBetweenRankWorld(final int min, final int max)
+	{
+		Collection<Name> names = new ArrayList<>();
+
+		String sql = "SELECT * FROM `names` WHERE `rank_world` NOT BETWEEN ? AND ?";
+
+		try (PreparedStatement statement = connection.prepareStatement(sql))
+		{
+			statement.setInt(1, min);
+			statement.setInt(2, max);
+			statement.execute();
+
+			ResultSet resultSet = statement.getResultSet();
+
+			while (resultSet.next())
+			{
+				names.add(
+					Name.of(
+						resultSet.getString("name"),
+						resultSet.getInt("rank_world"),
+						resultSet.getInt("rank_country"),
+						resultSet.getInt("usage_world"),
+						resultSet.getInt("usage_country"),
+						resultSet.getString("origin"),
+						resultSet.getString("continent"),
+						resultSet.getString("country"),
+						resultSet.getString("country_density")
+					)
+				);
+			}
+		}
+		catch (SQLException exception)
+		{
+			throw new DatabaseException("Не удалось выполнить запрос в базу данных.", exception);
+		}
+
+		return names;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param min {@inheritDoc}
+	 * @param max {@inheritDoc}
+	 * @return {@inheritDoc}
+	 */
+	@NotNull
+	@Override
+	public Collection<@NotNull Name> getBetweenRankCountry(final int min, final int max)
+	{
+		Collection<Name> names = new ArrayList<>();
+
+		String sql = "SELECT * FROM `names` WHERE `rank_country` NOT BETWEEN ? AND ?";
+
+		try (PreparedStatement statement = connection.prepareStatement(sql))
+		{
+			statement.setInt(1, min);
+			statement.setInt(2, max);
+			statement.execute();
+
+			ResultSet resultSet = statement.getResultSet();
+
+			while (resultSet.next())
+			{
+				names.add(
+					Name.of(
+						resultSet.getString("name"),
+						resultSet.getInt("rank_world"),
+						resultSet.getInt("rank_country"),
+						resultSet.getInt("usage_world"),
+						resultSet.getInt("usage_country"),
+						resultSet.getString("origin"),
+						resultSet.getString("continent"),
+						resultSet.getString("country"),
+						resultSet.getString("country_density")
+					)
+				);
+			}
+		}
+		catch (SQLException exception)
+		{
+			throw new DatabaseException("Не удалось выполнить запрос в базу данных.", exception);
+		}
+
+		return names;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return {@inheritDoc}
+	 */
 	@Override
 	public int count()
 	{
@@ -239,6 +453,12 @@ public class NameRepository implements NameRepositories
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param name {@inheritDoc}
+	 * @return {@inheritDoc}
+	 */
 	@Override
 	public boolean existsByName(@NotNull final String name)
 	{
@@ -264,21 +484,53 @@ public class NameRepository implements NameRepositories
 		return (count != 0);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param name {@inheritDoc}
+	 */
+	@Override
+	public void deleteByName(@NotNull final String name)
+	{
+		String sql = """
+			DELETE FROM `names` WHERE `name` = ? COLLATE NOCASE
+			""";
+
+		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+			statement.setString(1, name);
+			statement.execute();
+		}
+		catch (SQLException exception)
+		{
+			throw new DatabaseException("Не удалось выполнить запрос в базу данных.", exception);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param name {@inheritDoc}
+	 */
 	@Override
 	public void add(@NotNull final Name name)
 	{
 		String sql = """
-			INSERT INTO `names` (`name`, `length`, `rank`, `usage`, `country_density`)
-			VALUES (?, ?, ?, ?, ?)
+			INSERT INTO names (name, length, rank_world, rank_country, usage_world, usage_country, origin, continent, country, country_density)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 			""";
 
 		try (PreparedStatement statement = connection.prepareStatement(sql))
 		{
 			statement.setString(1, name.getValue());
 			statement.setInt(2, name.getLength());
-			statement.setInt(3, name.getRank());
-			statement.setInt(4, name.getUsage());
-			statement.setString(5, name.getCountryDensity());
+			statement.setInt(3, name.getRankWorld());
+			statement.setInt(4, name.getRankCountry());
+			statement.setInt(5, name.getUsageWorld());
+			statement.setInt(6, name.getUsageCountry());
+			statement.setString(7, name.getOrigin());
+			statement.setString(8, name.getCountry());
+			statement.setString(9, name.getContinent());
+			statement.setString(10, name.getCountryDensity());
 
 			statement.execute();
 		}
@@ -288,6 +540,9 @@ public class NameRepository implements NameRepositories
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void create()
 	{
@@ -297,8 +552,13 @@ public class NameRepository implements NameRepositories
 
 		sql.append(", `name` TEXT NOT NULL");
 		sql.append(", `length` INTEGER NOT NULL");
-		sql.append(", `rank` INTEGER NOT NULL");
-		sql.append(", `usage` INTEGER NOT NULL");
+		sql.append(", `rank_world` INTEGER NOT NULL");
+		sql.append(", `rank_country` INTEGER NOT NULL");
+		sql.append(", `usage_world` INTEGER NOT NULL");
+		sql.append(", `usage_country` INTEGER NOT NULL");
+		sql.append(", `origin` TEXT NOT NULL");
+		sql.append(", `continent` TEXT NOT NULL");
+		sql.append(", `country` TEXT NOT NULL");
 		sql.append(", `country_density` TEXT NOT NULL");
 
 		sql.append(", PRIMARY KEY(`id`)");
