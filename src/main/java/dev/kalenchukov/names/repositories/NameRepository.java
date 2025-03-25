@@ -110,7 +110,7 @@ public class NameRepository implements NameRepositories
 	{
 		Collection<Name> names = new ArrayList<>();
 
-		String sql = "SELECT * FROM `names`";
+		String sql = "SELECT * FROM `names` ORDER BY name ASC";
 
 		try (PreparedStatement statement = connection.prepareStatement(sql))
 		{
@@ -155,7 +155,7 @@ public class NameRepository implements NameRepositories
 	{
 		Collection<Name> names = new ArrayList<>();
 
-		String sql = "SELECT * FROM `names` WHERE `country` = ? COLLATE NOCASE";
+		String sql = "SELECT * FROM `names` WHERE `country` = ? COLLATE NOCASE ORDER BY name ASC";
 
 		try (PreparedStatement statement = connection.prepareStatement(sql))
 		{
@@ -201,7 +201,7 @@ public class NameRepository implements NameRepositories
 	{
 		Collection<Name> names = new ArrayList<>();
 
-		String sql = "SELECT * FROM `names` WHERE `country_density` = ? COLLATE NOCASE";
+		String sql = "SELECT * FROM `names` WHERE `country_density` = ? COLLATE NOCASE ORDER BY name ASC";
 
 		try (PreparedStatement statement = connection.prepareStatement(sql))
 		{
@@ -248,7 +248,7 @@ public class NameRepository implements NameRepositories
 	{
 		Collection<Name> names = new ArrayList<>();
 
-		String sql = "SELECT * FROM `names` WHERE `usage_world` NOT BETWEEN ? AND ?";
+		String sql = "SELECT * FROM `names` WHERE `usage_world` BETWEEN ? AND ? ORDER BY usage_world ASC";
 
 		try (PreparedStatement statement = connection.prepareStatement(sql))
 		{
@@ -296,7 +296,7 @@ public class NameRepository implements NameRepositories
 	{
 		Collection<Name> names = new ArrayList<>();
 
-		String sql = "SELECT * FROM `names` WHERE `usage_country` NOT BETWEEN ? AND ?";
+		String sql = "SELECT * FROM `names` WHERE `usage_country` BETWEEN ? AND ? ORDER BY usage_country ASC";
 
 		try (PreparedStatement statement = connection.prepareStatement(sql))
 		{
@@ -344,7 +344,7 @@ public class NameRepository implements NameRepositories
 	{
 		Collection<Name> names = new ArrayList<>();
 
-		String sql = "SELECT * FROM `names` WHERE `rank_world` NOT BETWEEN ? AND ?";
+		String sql = "SELECT * FROM `names` WHERE `rank_world` BETWEEN ? AND ? ORDER BY rank_world ASC";
 
 		try (PreparedStatement statement = connection.prepareStatement(sql))
 		{
@@ -392,7 +392,7 @@ public class NameRepository implements NameRepositories
 	{
 		Collection<Name> names = new ArrayList<>();
 
-		String sql = "SELECT * FROM `names` WHERE `rank_country` NOT BETWEEN ? AND ?";
+		String sql = "SELECT * FROM `names` WHERE `rank_country` BETWEEN ? AND ? ORDER BY rank_country ASC";
 
 		try (PreparedStatement statement = connection.prepareStatement(sql))
 		{
