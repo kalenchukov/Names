@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 Алексей Каленчуков
+ * Copyright © 2025 Алексей Каленчуков
  * GitHub: https://github.com/kalenchukov
  * E-mail: mailto:aleksey.kalenchukov@yandex.ru
  *
@@ -22,42 +22,26 @@
  * SOFTWARE.
  */
 
-package dev.kalenchukov.names;
+package dev.kalenchukov.names.services;
 
 import dev.kalenchukov.names.entities.Name;
-import dev.kalenchukov.names.services.NameService;
-import dev.kalenchukov.names.services.NameServices;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
 /**
- * Класс имён.
+ * Интерфейс для реализации сервиса имён.
  *
- * @author Алексей Каленчуков.
+ * @author Алексей Каленчуков
  */
-public final class Names
+public interface NameServices
 {
-	/**
-	 * Репозиторий имён.
-	 */
-	@NotNull
-	private static final NameServices nameServices = new NameService();
-
-	/**
-	 * Конструктор для {@code Names}.
-	 */
-	private Names() {}
-
 	/**
 	 * Возвращает количество имён.
 	 *
 	 * @return количество имён.
 	 */
-	public static int count()
-	{
-		return nameServices.count();
-	}
+	int count();
 
 	/**
 	 * Выполняет проверку существования имени.
@@ -65,10 +49,7 @@ public final class Names
 	 * @param name имя.
 	 * @return {@code true}, если имя существует, иначе {@code false}.
 	 */
-	public static boolean exists(@NotNull final String name)
-	{
-		return nameServices.existsByName(name);
-	}
+	boolean existsByName(@NotNull String name);
 
 	/**
 	 * Возвращает имя по названию.
@@ -76,11 +57,7 @@ public final class Names
 	 * @param name имя.
 	 * @return имя.
 	 */
-	@NotNull
-	public static Name getByName(@NotNull final String name)
-	{
-		return nameServices.getByName(name);
-	}
+	@NotNull Name getByName(@NotNull String name);
 
 	/**
 	 * Возвращает список имён в указанной стране.
@@ -88,11 +65,7 @@ public final class Names
 	 * @param country страна.
 	 * @return список имён в указанной стране.
 	 */
-	@NotNull
-	public static Collection<@NotNull Name> getByCountry(@NotNull final String country)
-	{
-		return nameServices.getByCountry(country);
-	}
+	@NotNull Collection<@NotNull Name> getByCountry(@NotNull String country);
 
 	/**
 	 * Возвращает список имён в указанной стране по плотности населения.
@@ -101,10 +74,7 @@ public final class Names
 	 * @return список имён в указанной стране по плотности населения.
 	 */
 	@NotNull
-	public static Collection<@NotNull Name> getByCountryDensity(@NotNull final String country)
-	{
-		return nameServices.getByCountryDensity(country);
-	}
+	Collection<@NotNull Name> getByCountryDensity(@NotNull String country);
 
 	/**
 	 * Возвращает список всех имён.
@@ -112,10 +82,7 @@ public final class Names
 	 * @return список всех имён.
 	 */
 	@NotNull
-	public static Collection<@NotNull Name> getAll()
-	{
-		return nameServices.getAll();
-	}
+	Collection<@NotNull Name> getAll();
 
 	/**
 	 * Возвращает список имён по интервалу использования в мире.
@@ -125,10 +92,7 @@ public final class Names
 	 * @return список имён.
 	 */
 	@NotNull
-	public static Collection<@NotNull Name> getBetweenUsageWorld(final int min, final int max)
-	{
-		return nameServices.getBetweenUsageWorld(min, max);
-	}
+	Collection<@NotNull Name> getBetweenUsageWorld(int min, int max);
 
 	/**
 	 * Возвращает список имён по интервалу использования в стране.
@@ -138,10 +102,7 @@ public final class Names
 	 * @return список имён.
 	 */
 	@NotNull
-	public static Collection<@NotNull Name> getBetweenUsageCountry(final int min, final int max)
-	{
-		return nameServices.getBetweenUsageCountry(min, max);
-	}
+	Collection<@NotNull Name> getBetweenUsageCountry(int min, int max);
 
 	/**
 	 * Возвращает список имён по интервалу рейтинга в мире.
@@ -151,10 +112,7 @@ public final class Names
 	 * @return список имён.
 	 */
 	@NotNull
-	public static Collection<@NotNull Name> getBetweenRankWorld(final int min, final int max)
-	{
-		return nameServices.getBetweenRankWorld(min, max);
-	}
+	Collection<@NotNull Name> getBetweenRankWorld(int min, int max);
 
 	/**
 	 * Возвращает список имён по интервалу рейтинга в стране.
@@ -164,8 +122,24 @@ public final class Names
 	 * @return список имён.
 	 */
 	@NotNull
-	public static Collection<@NotNull Name> getBetweenRankCountry(final int min, final int max)
-	{
-		return nameServices.getBetweenRankCountry(min, max);
-	}
+	Collection<@NotNull Name> getBetweenRankCountry(int min, int max);
+
+	/**
+	 * Добавляет имя.
+	 *
+	 * @param name имя.
+	 */
+	void add(@NotNull Name name);
+
+	/**
+	 * Удаляет имя.
+	 *
+	 * @param name имя.
+	 */
+	void deleteByName(@NotNull String name);
+
+	/**
+	 * Создаёт таблицу для имён.
+	 */
+	void create();
 }
